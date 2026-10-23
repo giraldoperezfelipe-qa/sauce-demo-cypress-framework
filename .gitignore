@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Cypress generated artifacts (videos and screenshots recorded during runs)
+cypress/videos/
+cypress/screenshots/
+
+# System files
+.DS_Store
+Thumbs.db
