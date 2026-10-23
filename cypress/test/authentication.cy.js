@@ -1,11 +1,13 @@
 /// <reference types="cypress" />
 
+import AuthenticationPage from '../pages/AuthenticationPage'
+
 describe('Test login success with valid credentials', () => {
 	it('passes', () => {
-		cy.visit('https://www.saucedemo.com')
-		cy.get('#user-name').type('standard_user')
-		cy.get('#password').type('secret_sauce')
-		cy.get('#login-button').click()
+		const authenticationPage = new AuthenticationPage()
+		cy.visit('')
+		authenticationPage.fillLoginFields('standard_user', 'secret_sauce')
+		authenticationPage.clickLoginButton()
 		cy.get('.title').should('have.text', 'Products')
 	})
 })
@@ -43,26 +45,15 @@ describe('Test login failures with invalid credentials', () => {
 			caseName: 'locked username',
 		},
 	]
-	invalidLogins.forEach(({ username, password, errorDescription, caseName }) => {
-		it(`Using ${caseName} must display the error: ${errorDescription}`, () => {
-			cy.visit('https://www.saucedemo.com')
-			if (username) {
-				cy.get('#user-name').type(username)
-			} else {
-				cy.get('#user-name').clear()
-			}
-
-			if (password) {
-				cy.get('#password').type(password)
-			} else {
-				cy.get('#password').clear()
-			}
-
-			cy.get('#login-button').click()
-
-			cy.get('.error-message-container.error')
-				.should('be.visible')
-				.and('include.text', errorDescription)
-		})
-	})
+	invalidLogins.forEach(
+		({ username, password, errorDescription, caseName }) => {
+			it(`Using ${caseName} must display the error: ${errorDescription}`, () => {
+				const authenticationPage = new AuthenticationPage()
+				cy.visit('')
+				authenticationPage.fillLoginFields(username, password)
+				authenticationPage.clickLoginButton()
+				authenticationPage.compareErrorMessage(errorDescription)
+			})
+		},
+	)
 })
