@@ -6,8 +6,12 @@ describe('Test login success with valid credentials', () => {
 	it('passes', () => {
 		const authenticationPage = new AuthenticationPage()
 		cy.visit('')
-		authenticationPage.fillLoginFields('standard_user', 'secret_sauce')
-		authenticationPage.clickLoginButton()
+
+		cy.env(['SAUCE_USER', 'SAUCE_PASS']).then(({ SAUCE_USER, SAUCE_PASS }) => {
+			authenticationPage.fillLoginFields(SAUCE_USER, SAUCE_PASS)
+			authenticationPage.clickLoginButton()
+		})
+
 		cy.get('.title').should('have.text', 'Products')
 	})
 })
