@@ -4,7 +4,7 @@ import AuthenticationPage from '../pages/AuthenticationPage'
 
 const invalidLogins = require('../fixtures/invalidCredentialsForLogin.json')
 
-describe('Succesful Login', () => {
+describe('Succesful Login scenario', () => {
 	it('Test login success with valid credentials', () => {
 		const authenticationPage = new AuthenticationPage()
 		cy.visit('')
@@ -21,11 +21,11 @@ describe('Succesful Login', () => {
 	})
 })
 
-describe('Unsuccesful Login', () => {
+describe('Unsuccesful Login scenarios', () => {
 	invalidLogins.forEach((loginCase) => {
 		const { caseName, errorDescription } = loginCase //Extract the properties and assign them to standalone constants
 
-		it(`Using ${caseName} must display the error: ${errorDescription}`, () => {
+		it(`Attempting to login using ${caseName} must display the error: ${errorDescription}`, () => {
 			cy.getInvalidLoginCredential(loginCase).then(({ username, password }) => {
 				const authenticationPage = new AuthenticationPage()
 
@@ -41,7 +41,7 @@ describe('Unsuccesful Login', () => {
 	})
 })
 
-describe('Unsuccessful actions without login in', () => {
+describe('Unsuccessful actions without login in scenarios', () => {
 	it('Unsuccesful attempt to go to the product list', () => {
 		cy.visit('/inventory.html', {failOnStatusCode: false})
 		//Ignore fail 2xx response code explicitly or this case, so Cypress can go on
@@ -86,5 +86,21 @@ describe('Unsuccessful actions without login in', () => {
 			AuthenticationPage.ELEMENTS.errorMessage,
 			"You can only access '/checkout-complete.html' when you are logged in.",
 		)
+	})
+})
+
+describe('Logout scenario', () => {
+	it('Logout from a successful login', () => {
+		const authenticationPage = new AuthenticationPage()
+		cy.visit('')
+
+		cy.env(['SAUCE_USER', 'SAUCE_PASS']).then(({ SAUCE_USER, SAUCE_PASS }) => {
+			authenticationPage.fillLoginFields(SAUCE_USER, SAUCE_PASS)
+			authenticationPage.clickLoginButton()
+		})
+
+		authenticationPage.logout()
+		cy.get(AuthenticationPage.ELEMENTS.usernameInput).should('be.visible')
+		cy.get(AuthenticationPage.ELEMENTS.passwordInput).should('be.visible')
 	})
 })
