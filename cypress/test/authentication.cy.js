@@ -41,14 +41,50 @@ describe('Unsuccesful Login', () => {
 	})
 })
 
-describe('Actions without login in', () => {
+describe('Unsuccessful actions without login in', () => {
 	it('Unsuccesful attempt to go to the product list', () => {
-		cy.visit('https://www.saucedemo.com/inventory.html', {failOnStatusCode: false})
+		cy.visit('/inventory.html', {failOnStatusCode: false})
 		//Ignore fail 2xx response code explicitly or this case, so Cypress can go on
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
 			"You can only access '/inventory.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the cart list', () => {
+		cy.visit('/cart.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/cart.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the first step checkout', () => {
+		cy.visit('/checkout-step-one.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/checkout-step-one.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the second step checkout', () => {
+		cy.visit('/checkout-step-two.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/checkout-step-two.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the checout completed page', () => {
+		cy.visit('/checkout-complete.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/checkout-complete.html' when you are logged in.",
 		)
 	})
 })
