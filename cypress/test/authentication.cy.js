@@ -2,8 +2,10 @@
 
 import AuthenticationPage from '../pages/AuthenticationPage'
 
-describe('Test login success with valid credentials', () => {
-	it('passes', () => {
+const invalidLogins = require('../fixtures/invalidCredentialsForLogin.json')
+
+describe('Succesful Login', () => {
+	it('Test login success with valid credentials', () => {
 		const authenticationPage = new AuthenticationPage()
 		cy.visit('')
 
@@ -12,52 +14,77 @@ describe('Test login success with valid credentials', () => {
 			authenticationPage.clickLoginButton()
 		})
 
-		cy.get('.title').should('have.text', 'Products')
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.title,
+			'Products',
+		)
 	})
 })
 
-describe('Test login failures with invalid credentials', () => {
-	const invalidLogins = [
-		{
-			username: 'qwerty123',
-			password: 'qwerty9685',
-			errorDescription: 'Username and password do not match',
-			caseName: 'invalid username and password',
-		},
-		{
-			username: '',
-			password: '',
-			errorDescription: 'Username is required',
-			caseName: 'blank username and password',
-		},
-		{
-			username: '',
-			password: 'secret_sauce',
-			errorDescription: 'Username is required',
-			caseName: 'only blank username',
-		},
-		{
-			username: 'standard_user',
-			password: '',
-			errorDescription: 'Password is required',
-			caseName: 'only blank password',
-		},
-		{
-			username: 'locked_out_user',
-			password: 'secret_sauce',
-			errorDescription: 'this user has been locked out',
-			caseName: 'locked username',
-		},
-	]
-	invalidLogins.forEach(
-		({ username, password, errorDescription, caseName }) => {
-			it(`Using ${caseName} must display the error: ${errorDescription}`, () => {
+describe('Unsuccesful Login', () => {
+	invalidLogins.forEach((loginCase) => {
+		const { caseName, errorDescription } = loginCase //Extract the properties and assign them to standalone constants
+
+		it(`Using ${caseName} must display the error: ${errorDescription}`, () => {
+			cy.getInvalidLoginCredential(loginCase).then(({ username, password }) => {
 				const authenticationPage = new AuthenticationPage()
+
 				cy.visit('')
 				authenticationPage.fillLoginFields(username, password)
 				authenticationPage.clickLoginButton()
-				authenticationPage.compareErrorMessage(errorDescription)
+				cy.locateElementAndCompareText(
+					AuthenticationPage.ELEMENTS.errorMessage,
+					errorDescription,
+				)
 			})
-		},
-	)
+		})
+	})
+})
+
+describe('Unsuccessful actions without login in', () => {
+	it('Unsuccesful attempt to go to the product list', () => {
+		cy.visit('/inventory.html', {failOnStatusCode: false})
+		//Ignore fail 2xx response code explicitly or this case, so Cypress can go on
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/inventory.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the cart list', () => {
+		cy.visit('/cart.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/cart.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the first step checkout', () => {
+		cy.visit('/checkout-step-one.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/checkout-step-one.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the second step checkout', () => {
+		cy.visit('/checkout-step-two.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/checkout-step-two.html' when you are logged in.",
+		)
+	})
+
+	it('Unsuccesful attempt to go to the checout completed page', () => {
+		cy.visit('/checkout-complete.html', {failOnStatusCode: false})
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/checkout-complete.html' when you are logged in.",
+		)
+	})
 })

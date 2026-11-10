@@ -3,6 +3,7 @@ class AuthenticationPage {
 		usernameInput: '#user-name',
 		passwordInput: '#password',
 		loginButton: '#login-button',
+		title: '.title',
 		errorMessage: '.error-message-container.error',
 	}
 
@@ -28,12 +29,6 @@ class AuthenticationPage {
 
 	clickLoginButton() {
 		cy.locateElementAndClickIt(AuthenticationPage.ELEMENTS.loginButton)
-	}
-
-	compareErrorMessage(errorDescription) {
-		cy.get(AuthenticationPage.ELEMENTS.errorMessage)
-			.should('be.visible')
-			.and('include.text', errorDescription)
 	}
 }
 
