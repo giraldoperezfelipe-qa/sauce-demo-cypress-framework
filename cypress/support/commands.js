@@ -18,7 +18,7 @@ Cypress.Commands.add('getInvalidLoginCredential', (loginCase) => {
 		return cy
 			.env(['SAUCE_USER', 'SAUCE_PASS'])
 			.then(({ SAUCE_USER, SAUCE_PASS }) => ({
-				...loginCase, //Copy all other poperties from the original object, so they are not lost
+				...loginCase, //Copy all other properties from the original object, so they are not lost
 				username:
 					loginCase.username === '{{SAUCE_USER}}'
 						? SAUCE_USER //If the previous comparision matches, asign the SAUCE_USER value
