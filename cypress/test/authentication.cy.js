@@ -40,3 +40,15 @@ describe('Unsuccesful Login', () => {
 		})
 	})
 })
+
+describe('Actions without login in', () => {
+	it('Unsuccesful attempt to go to the product list', () => {
+		cy.visit('https://www.saucedemo.com/inventory.html', {failOnStatusCode: false})
+		//Ignore fail 2xx response code explicitly or this case, so Cypress can go on
+
+		cy.locateElementAndCompareText(
+			AuthenticationPage.ELEMENTS.errorMessage,
+			"You can only access '/inventory.html' when you are logged in.",
+		)
+	})
+})
