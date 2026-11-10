@@ -4,6 +4,8 @@ class AuthenticationPage {
 		passwordInput: '#password',
 		loginButton: '#login-button',
 		title: '.title',
+		menuButton: '#react-burger-menu-btn',
+		logoutButton: '#logout_sidebar_link',
 		errorMessage: '.error-message-container.error',
 	}
 
@@ -29,6 +31,11 @@ class AuthenticationPage {
 
 	clickLoginButton() {
 		cy.locateElementAndClickIt(AuthenticationPage.ELEMENTS.loginButton)
+	}
+
+	logout() {
+		cy.locateElementAndClickIt(AuthenticationPage.ELEMENTS.menuButton)
+		cy.locateElementAndClickIt(AuthenticationPage.ELEMENTS.logoutButton)
 	}
 }
 
