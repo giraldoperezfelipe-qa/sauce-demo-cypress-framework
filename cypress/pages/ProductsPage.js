@@ -7,22 +7,35 @@ class ProductsPage {
 		addToCartButton: '.btn.btn_primary.btn_small.btn_inventory',
 	}
 
-	pickRandomProduct() {
-		cy.get('.inventory_item').first().should('be.visible')
-
+	pickRandomNProducts(count) {
 		return cy.get('.inventory_item').then(($items) => {
-			const randomIndex = Math.floor(Math.random() * $items.length)
+			const totalItems = $items.length
 
-			const pickRandomProduct = $items[randomIndex]
+			if (totalItems < count) {
+				throw new Error(
+					'You have requested to add more items to your cart than the currently amount available',
+				)
+			} else {
+				const selectedIndices = []
 
-			//Wrap it back in Cypress, to chain further commands
-			return cy.wrap(pickRandomProduct)
+				//Fill the array with N unique products indices
+				while (selectedIndices.length < count) {
+					const randomIndex = Math.floor(Math.random() * totalItems)
+					if (!selectedIndices.includes(randomIndex)) {
+						selectedIndices.push(randomIndex)
+					}
+				}
+
+				// Map the unique indices to their DOM elements, and wrap them to chain them later
+				const randomProducts = selectedIndices.map((index) => $items[index])
+				return cy.wrap(randomProducts)
+			}
 		})
 	}
 
-    getProductName(product) {
-        return cy.get(product).invoke('text')
-    }
+	getProductName(product) {
+		return cy.get(product).invoke('text')
+	}
 }
 
 export default ProductsPage
