@@ -94,10 +94,7 @@ describe('Logout scenario', () => {
 		const authenticationPage = new AuthenticationPage()
 		cy.visit('')
 
-		cy.env(['SAUCE_USER', 'SAUCE_PASS']).then(({ SAUCE_USER, SAUCE_PASS }) => {
-			authenticationPage.fillLoginFields(SAUCE_USER, SAUCE_PASS)
-			authenticationPage.clickLoginButton()
-		})
+		cy.loginWithValidCredentials()
 
 		authenticationPage.logout()
 		cy.get(AuthenticationPage.ELEMENTS.usernameInput).should('be.visible')
