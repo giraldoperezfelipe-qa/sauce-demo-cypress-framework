@@ -19,3 +19,16 @@ describe('Add products to cart', () => {
 		cy.locateElementAndCompareText(ProductsPage.ELEMENTS.cartItemsCounter, 2)
 	})
 })
+
+describe('Cart congruency', () => {
+	it('Item in the cart is still there after loging out and login in again', () => {
+		cy.visit('')
+
+		cy.loginWithValidCredentials()
+        cy.addNProductsToCart(1)
+		cy.locateElementAndCompareText(ProductsPage.ELEMENTS.cartItemsCounter, 1)
+		cy.logout()
+		cy.loginWithValidCredentials()
+		cy.locateElementAndCompareText(ProductsPage.ELEMENTS.cartItemsCounter, 1)
+	})
+})

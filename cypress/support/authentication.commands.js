@@ -9,6 +9,12 @@ Cypress.Commands.add('loginWithValidCredentials', () => {
 	})
 })
 
+Cypress.Commands.add('logout', () => {
+	const authenticationPage = new AuthenticationPage()
+
+	authenticationPage.logout()
+})
+
 Cypress.Commands.add('getInvalidLoginCredential', (loginCase) => {
 	if (
 		loginCase.username === '{{SAUCE_USER}}' ||
