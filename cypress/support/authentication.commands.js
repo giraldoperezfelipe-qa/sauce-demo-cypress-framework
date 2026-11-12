@@ -1,12 +1,17 @@
 import AuthenticationPage from '../pages/AuthenticationPage'
 
-Cypress.Commands.add('loginWithValidCredentials', () => {
+Cypress.Commands.add('logInWithValidCredentials', (customUser, customPass) => {
 	const authenticationPage = new AuthenticationPage()
 
-	cy.env(['SAUCE_USER', 'SAUCE_PASS']).then(({ SAUCE_USER, SAUCE_PASS }) => {
-		authenticationPage.fillLoginFields(SAUCE_USER, SAUCE_PASS)
+	if (customUser && customPass) {
+		authenticationPage.fillLoginFields(customUser, customPass)
 		authenticationPage.clickLoginButton()
-	})
+	} else {
+		cy.env(['SAUCE_USER', 'SAUCE_PASS']).then(({ SAUCE_USER, SAUCE_PASS }) => {
+			authenticationPage.fillLoginFields(SAUCE_USER, SAUCE_PASS)
+			authenticationPage.clickLoginButton()
+		})
+	}
 })
 
 Cypress.Commands.add('logout', () => {
