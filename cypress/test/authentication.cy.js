@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import AuthenticationPage from '../pages/AuthenticationPage'
+import AuthenticationPage from '../pages/authenticationPage'
 
 const invalidLogins = require('../fixtures/invalidCredentialsForLogin.json')
 
@@ -43,7 +43,7 @@ describe('Unsuccesful Login scenarios', () => {
 
 describe('Unsuccessful actions without login in scenarios', () => {
 	it('Unsuccesful attempt to go to the product list', () => {
-		cy.visit('/inventory.html', {failOnStatusCode: false})
+		cy.visit('/inventory.html', { failOnStatusCode: false })
 		//Ignore fail 2xx response code explicitly or this case, so Cypress can go on
 
 		cy.locateElementAndCompareText(
@@ -53,7 +53,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 	})
 
 	it('Unsuccesful attempt to go to the cart list', () => {
-		cy.visit('/cart.html', {failOnStatusCode: false})
+		cy.visit('/cart.html', { failOnStatusCode: false })
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
@@ -62,7 +62,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 	})
 
 	it('Unsuccesful attempt to go to the first step checkout', () => {
-		cy.visit('/checkout-step-one.html', {failOnStatusCode: false})
+		cy.visit('/checkout-step-one.html', { failOnStatusCode: false })
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
@@ -71,7 +71,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 	})
 
 	it('Unsuccesful attempt to go to the second step checkout', () => {
-		cy.visit('/checkout-step-two.html', {failOnStatusCode: false})
+		cy.visit('/checkout-step-two.html', { failOnStatusCode: false })
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
@@ -80,7 +80,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 	})
 
 	it('Unsuccesful attempt to go to the checout completed page', () => {
-		cy.visit('/checkout-complete.html', {failOnStatusCode: false})
+		cy.visit('/checkout-complete.html', { failOnStatusCode: false })
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
@@ -94,10 +94,7 @@ describe('Logout scenario', () => {
 		const authenticationPage = new AuthenticationPage()
 		cy.visit('')
 
-		cy.env(['SAUCE_USER', 'SAUCE_PASS']).then(({ SAUCE_USER, SAUCE_PASS }) => {
-			authenticationPage.fillLoginFields(SAUCE_USER, SAUCE_PASS)
-			authenticationPage.clickLoginButton()
-		})
+		cy.logInWithValidCredentials()
 
 		authenticationPage.logout()
 		cy.get(AuthenticationPage.ELEMENTS.usernameInput).should('be.visible')
