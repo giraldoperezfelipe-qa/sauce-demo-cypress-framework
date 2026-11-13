@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import AuthenticationPage from '../pages/AuthenticationPage'
+import AuthenticationPage from '../pages/authenticationPage'
 
 const invalidLogins = require('../fixtures/invalidCredentialsForLogin.json')
 

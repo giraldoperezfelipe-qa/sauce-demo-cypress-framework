@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import ProductsPage from '../pages/ProductsPage'
+import ProductsPage from '../pages/productsPage'
 
 describe('Add products to cart', () => {
 	it('Add one item to the cart', () => {

@@ -1,4 +1,4 @@
-import AuthenticationPage from '../pages/AuthenticationPage'
+import AuthenticationPage from '../pages/authenticationPage'
 
 Cypress.Commands.add('logInWithValidCredentials', (customUser, customPass) => {
 	const authenticationPage = new AuthenticationPage()
