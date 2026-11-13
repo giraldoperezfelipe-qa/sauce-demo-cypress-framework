@@ -32,10 +32,6 @@ class ProductsPage {
 			}
 		})
 	}
-
-	getProductName(product) {
-		return cy.get(product).invoke('text')
-	}
 }
 
 export default ProductsPage

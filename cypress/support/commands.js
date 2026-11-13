@@ -1,5 +1,6 @@
 import './authentication.commands.js'
 import './product.commands.js'
+import './cart.commands.js'
 
 Cypress.Commands.add('locateElementAndFillField', (locator, text) => {
 	cy.get(locator).clear().type(text)
