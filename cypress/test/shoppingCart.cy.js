@@ -4,7 +4,7 @@ import ProductsPage from '../pages/productsPage'
 import CartPage from '../pages/cartPage'
 
 describe('Products added to cart', () => {
-	it('Added products match with the ones present in the cart', () => {
+	it('Added products must match with the ones present in the cart', () => {
 		const numberOfDesiredProducts = 2
 		cy.visit('')
 		cy.logInWithValidCredentials()
