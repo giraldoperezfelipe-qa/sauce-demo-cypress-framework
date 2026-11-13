@@ -1,4 +1,4 @@
-import ProductsPage from '../pages/productsPage.js'
+import ProductsPage from '../../pages/productsPage.js'
 
 Cypress.Commands.add('addNProductsToCart', (numberOfProducts) => {
 	const productsPage = new ProductsPage()
