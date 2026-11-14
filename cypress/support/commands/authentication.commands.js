@@ -36,9 +36,9 @@ Cypress.Commands.add('getInvalidLoginCredential', (loginCase) => {
 				password:
 					loginCase.password === '{{SAUCE_PASS}}'
 						? SAUCE_PASS //If the previous comparision matches, asign the SAUCE_PASS value
-						: loginCase.password, //Otherwise, leave the original value
+						: loginCase.password //Otherwise, leave the original value
 			}))
 	}
 
-	return cy.wrap(loginCase) //When 'if' block is not met: This ensure that 'loginCase' returns as Cypress chainable
+	return cy.wrap(loginCase) //Returns as Cypress chainable
 })
