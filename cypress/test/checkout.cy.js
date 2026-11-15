@@ -2,7 +2,6 @@
 
 import ProductsPage from '../pages/productsPage'
 import CheckoutPage from '../pages/checkoutPage'
-import { TEXTS } from '../support/constants'
 
 const incompleteCheckoutFormData = require('../fixtures/incompleteCheckoutFormData.json')
 
@@ -11,30 +10,16 @@ describe('Full checkout process', () => {
 		const numberOfDesiredProducts = 2
 		cy.visit('')
 		cy.logInWithValidCredentials()
+		cy.completeCheckoutProcess(numberOfDesiredProducts)
+	})
 
-		cy.addNProductsToCart(numberOfDesiredProducts).then((products) => {
-			const checkoutPage = new CheckoutPage()
-			cy.locateElementAndCompareText(
-				ProductsPage.ELEMENTS.cartItemsCounter,
-				numberOfDesiredProducts,
-			)
-			cy.retrieveProductNamesAddedToCart(products).then((addedNames) => {
-				cy.locateElementAndClickIt(ProductsPage.ELEMENTS.cartIcon)
-				cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.checkoutButton)
-				checkoutPage.fillCheckoutFormWithRandomValidInformation()
-				cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.continueButton)
-				cy.get(CheckoutPage.ELEMENTS.itemName).then((items) => {
-					cy.retrieveProductNamesInCheckout(items).then((cartNames) => {
-						expect(cartNames).to.deep.equal(addedNames)
-					})
-				})
-				cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.finishButton)
-				cy.locateElementAndCompareText(
-					CheckoutPage.ELEMENTS.checkoutCompletedTitle,
-					TEXTS.CHECKOUT.SUCCESS_TITLE,
-				)
-			})
-		})
+	it('Return to the home page after checkout', () => {
+		const numberOfDesiredProducts = 2
+		cy.visit('')
+		cy.logInWithValidCredentials()
+		cy.completeCheckoutProcess(numberOfDesiredProducts)
+		cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.backToProductsButton)
+		cy.get(ProductsPage.ELEMENTS.inventoryItems).should('be.visible')
 	})
 })
 
@@ -56,7 +41,7 @@ describe('Checkout form errors', () => {
 						cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.continueButton)
 						cy.locateElementAndCompareText(
 							CheckoutPage.ELEMENTS.errorMessage,
-							errorDescription,
+							errorDescription
 						)
 					}
 				)

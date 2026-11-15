@@ -5,12 +5,13 @@ class CheckoutPage {
 		checkoutButton: '#checkout',
 		continueButton: '#continue',
 		finishButton: '#finish',
+		backToProductsButton: '#back-to-products',
 		firstNameInput: '#first-name',
 		lastNameInput: '#last-name',
 		postalCodeInput: '#postal-code',
 		checkoutCompletedTitle: '[data-test="complete-header"]',
 		itemName: '.inventory_item_name',
-		errorMessage: '.error-message-container.error',
+		errorMessage: '.error-message-container.error'
 	}
 
 	fillCheckoutFormWithRandomValidInformation() {
@@ -32,7 +33,7 @@ class CheckoutPage {
 		const fields = [
 			{ value: firstName, selector: CheckoutPage.ELEMENTS.firstNameInput },
 			{ value: lastName, selector: CheckoutPage.ELEMENTS.lastNameInput },
-			{ value: postalCode, selector: CheckoutPage.ELEMENTS.postalCodeInput },
+			{ value: postalCode, selector: CheckoutPage.ELEMENTS.postalCodeInput }
 		]
 
 		fields.forEach(({ value, selector }) => {

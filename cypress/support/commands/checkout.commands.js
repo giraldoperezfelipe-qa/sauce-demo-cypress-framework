@@ -1,4 +1,7 @@
 import { faker } from '@faker-js/faker'
+import { TEXTS } from '../../support/constants'
+import ProductsPage from '../../pages/productsPage'
+import CheckoutPage from '../../pages/checkoutPage'
 
 Cypress.Commands.add('retrieveProductNamesInCheckout', (products) => {
 	const productNamesList = []
@@ -18,7 +21,9 @@ Cypress.Commands.add('retrieveProductNamesInCheckout', (products) => {
 		})
 })
 
-Cypress.Commands.add('getIncompleteCheckoutFormData', (IncompleteCheckoutScenario) => {
+Cypress.Commands.add(
+	'getIncompleteCheckoutFormData',
+	(IncompleteCheckoutScenario) => {
 		const resolvedData = {
 			...IncompleteCheckoutScenario, //Copy all other properties from the original object, so they are not lost
 			firstName:
@@ -38,3 +43,29 @@ Cypress.Commands.add('getIncompleteCheckoutFormData', (IncompleteCheckoutScenari
 		return cy.wrap(resolvedData)
 	}
 )
+
+Cypress.Commands.add('completeCheckoutProcess', (numberOfDesiredProducts) => {
+	cy.addNProductsToCart(numberOfDesiredProducts).then((products) => {
+		const checkoutPage = new CheckoutPage()
+		cy.locateElementAndCompareText(
+			ProductsPage.ELEMENTS.cartItemsCounter,
+			numberOfDesiredProducts
+		)
+		cy.retrieveProductNamesAddedToCart(products).then((addedNames) => {
+			cy.locateElementAndClickIt(ProductsPage.ELEMENTS.cartIcon)
+			cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.checkoutButton)
+			checkoutPage.fillCheckoutFormWithRandomValidInformation()
+			cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.continueButton)
+			cy.get(CheckoutPage.ELEMENTS.itemName).then((items) => {
+				cy.retrieveProductNamesInCheckout(items).then((cartNames) => {
+					expect(cartNames).to.deep.equal(addedNames)
+				})
+			})
+			cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.finishButton)
+			cy.locateElementAndCompareText(
+				CheckoutPage.ELEMENTS.checkoutCompletedTitle,
+				TEXTS.CHECKOUT.SUCCESS_TITLE
+			)
+		})
+	})
+})
