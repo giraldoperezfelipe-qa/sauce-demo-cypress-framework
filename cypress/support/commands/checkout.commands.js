@@ -45,27 +45,42 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('completeCheckoutProcess', (numberOfDesiredProducts) => {
-	cy.addNProductsToCart(numberOfDesiredProducts).then((products) => {
+	return cy.addNProductsToCart(numberOfDesiredProducts).then((products) => {
 		const checkoutPage = new CheckoutPage()
 		cy.locateElementAndCompareText(
 			ProductsPage.ELEMENTS.cartItemsCounter,
 			numberOfDesiredProducts
 		)
-		cy.retrieveProductNamesAddedToCart(products).then((addedNames) => {
+
+		return cy.retrieveProductNamesAddedToCart(products).then((addedNames) => {
 			cy.locateElementAndClickIt(ProductsPage.ELEMENTS.cartIcon)
 			cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.checkoutButton)
-			checkoutPage.fillCheckoutFormWithRandomValidInformation()
+			let customerInfo =
+				checkoutPage.fillAndReturnCheckoutFormWithRandomValidInformation()
 			cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.continueButton)
-			cy.get(CheckoutPage.ELEMENTS.itemName).then((items) => {
-				cy.retrieveProductNamesInCheckout(items).then((cartNames) => {
+
+			return cy.get(CheckoutPage.ELEMENTS.itemName).then((items) => {
+				return cy.retrieveProductNamesInCheckout(items).then((cartNames) => {
 					expect(cartNames).to.deep.equal(addedNames)
+					const checkoutItemsObj = cartNames.reduce((acc, name, index) => {
+						acc[`item-${index + 1}`] = name
+						return acc
+					}, {})
+
+					customerInfo = {
+						...customerInfo,
+						checkoutItemsObj
+					}
+
+					cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.finishButton)
+					cy.locateElementAndCompareText(
+						CheckoutPage.ELEMENTS.checkoutCompletedTitle,
+						TEXTS.CHECKOUT.SUCCESS_TITLE
+					)
+
+					return cy.wrap(customerInfo)
 				})
 			})
-			cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.finishButton)
-			cy.locateElementAndCompareText(
-				CheckoutPage.ELEMENTS.checkoutCompletedTitle,
-				TEXTS.CHECKOUT.SUCCESS_TITLE
-			)
 		})
 	})
 })

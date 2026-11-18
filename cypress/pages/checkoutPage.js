@@ -6,6 +6,7 @@ class CheckoutPage {
 		continueButton: '#continue',
 		finishButton: '#finish',
 		backToProductsButton: '#back-to-products',
+		downloadOrderPDFButton: '#generate-pdf-order',
 		firstNameInput: '#first-name',
 		lastNameInput: '#last-name',
 		postalCodeInput: '#postal-code',
@@ -14,19 +15,27 @@ class CheckoutPage {
 		errorMessage: '.error-message-container.error'
 	}
 
-	fillCheckoutFormWithRandomValidInformation() {
+	fillAndReturnCheckoutFormWithRandomValidInformation() {
+		const customerInfo = {
+			firstName: faker.person.firstName(),
+			lastName: faker.person.lastName(),
+			zipCode: faker.location.zipCode()
+		}
+
 		cy.locateElementAndFillField(
 			CheckoutPage.ELEMENTS.firstNameInput,
-			faker.person.firstName()
+			customerInfo.firstName
 		)
 		cy.locateElementAndFillField(
 			CheckoutPage.ELEMENTS.lastNameInput,
-			faker.person.lastName()
+			customerInfo.lastName
 		)
 		cy.locateElementAndFillField(
 			CheckoutPage.ELEMENTS.postalCodeInput,
-			faker.location.zipCode()
+			customerInfo.zipCode
 		)
+
+		return customerInfo
 	}
 
 	fillCheckoutForm(firstName, lastName, postalCode) {

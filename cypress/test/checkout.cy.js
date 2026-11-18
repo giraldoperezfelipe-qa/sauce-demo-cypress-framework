@@ -21,6 +21,47 @@ describe('Full checkout process', () => {
 		cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.backToProductsButton)
 		cy.get(ProductsPage.ELEMENTS.inventoryItems).should('be.visible')
 	})
+
+	it('Download and check the PDF order', () => {
+		const numberOfDesiredProducts = 2
+		const path = require('path')
+		const filePrefix = 'swag-labs-order-'
+
+		cy.visit('')
+		// Fail immediately if the downloads folder is not empty
+		cy.task('getDownloadsFolderFiles').should('be.empty')
+		cy.logInWithValidCredentials()
+
+		cy.completeCheckoutProcess(numberOfDesiredProducts).then((customerInfo) => {
+			cy.locateElementAndClickIt(CheckoutPage.ELEMENTS.downloadOrderPDFButton)
+
+			const downloadsFolder = Cypress.config('downloadsFolder')
+
+			cy.task('findDownloadedOrderPDF', filePrefix)
+				.then((fileName) => {
+					expect(fileName).to.not.be.null
+					const filePath = path.join(downloadsFolder, fileName)
+
+					cy.readFile(filePath).should('exist')
+
+					return cy.task('parseDownloadedPDF', filePath).then((text) => {
+						//Compare the checkout info and products, with the downloaded PDF info
+						expect(text).to.include(customerInfo.firstName)
+						expect(text).to.include(customerInfo.lastName)
+						expect(text).to.include(customerInfo.zipCode)
+
+						Object.values(customerInfo.checkoutItemsObj).forEach(
+							(productName) => {
+								expect(text).to.include(productName)
+							}
+						)
+					})
+				})
+				.then(() => {
+					cy.task('deleteDownloadedOrderPDF', filePrefix)
+				})
+		})
+	})
 })
 
 describe('Checkout form errors', () => {
