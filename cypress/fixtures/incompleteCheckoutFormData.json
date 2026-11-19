@@ -1,0 +1,30 @@
+[
+  {
+    "firstName": "",
+    "lastName": "",
+    "postalCode": "",
+    "errorDescription": "Error: First Name is required",
+    "caseName": "checkout form blank"
+  },
+  {
+    "firstName": "",
+    "lastName": "{{LAST_NAME}}",
+    "postalCode": "{{POSTAL_CODE}}",
+    "errorDescription": "Error: First Name is required",
+    "caseName": "first name blank"
+  },
+  {
+    "firstName": "{{FIRST_NAME}}",
+    "lastName": "",
+    "postalCode": "{{POSTAL_CODE}}",
+    "errorDescription": "Error: Last Name is required",
+    "caseName": "last name blank"
+  },
+  {
+    "firstName": "{{FIRST_NAME}}",
+    "lastName": "{{LAST_NAME}}",
+    "postalCode": "",
+    "errorDescription": "Error: Postal Code is required",
+    "caseName": "postal code blank"
+  }
+]

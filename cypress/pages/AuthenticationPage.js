@@ -10,23 +10,18 @@ class AuthenticationPage {
 	}
 
 	fillLoginFields(username, password) {
-		if (username) {
-			cy.locateElementAndFillField(
-				AuthenticationPage.ELEMENTS.usernameInput,
-				username,
-			)
-		} else {
-			cy.get(AuthenticationPage.ELEMENTS.usernameInput).clear()
-		}
+		const fields = [
+			{ value: username, selector: AuthenticationPage.ELEMENTS.usernameInput },
+			{ value: password, selector: AuthenticationPage.ELEMENTS.passwordInput }
+		]
 
-		if (password) {
-			cy.locateElementAndFillField(
-				AuthenticationPage.ELEMENTS.passwordInput,
-				password,
-			)
-		} else {
-			cy.get(AuthenticationPage.ELEMENTS.passwordInput).clear()
-		}
+		fields.forEach(({ value, selector }) => {
+			if (value) {
+				cy.locateElementAndFillField(selector, value)
+			} else {
+				cy.get(selector).clear()
+			}
+		})
 	}
 
 	clickLoginButton() {
