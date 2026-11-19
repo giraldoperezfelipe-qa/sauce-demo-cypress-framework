@@ -1,5 +1,3 @@
-⚠️ IN PROGRESS ⚠️
-
 # Sauce demo cypress js framework
 
 This is a small, end-to-end automation testing demo built using JS and Cypress, targeting the demo e-commerce store SauceDemo.
