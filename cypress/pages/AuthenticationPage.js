@@ -6,7 +6,7 @@ class AuthenticationPage {
 		title: '.title',
 		menuButton: '#react-burger-menu-btn',
 		logoutButton: '#logout_sidebar_link',
-		errorMessage: '.error-message-container.error',
+		errorMessage: '.error-message-container.error'
 	}
 
 	fillLoginFields(username, password) {

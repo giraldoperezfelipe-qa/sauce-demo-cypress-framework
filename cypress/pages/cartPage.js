@@ -1,7 +1,7 @@
 class CartPage {
 	static ELEMENTS = {
 		title: '.title',
-		itemName: '.inventory_item_name',
+		itemName: '.inventory_item_name'
 	}
 }
 

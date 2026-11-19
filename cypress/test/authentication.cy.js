@@ -16,7 +16,7 @@ describe('Succesful Login scenario', () => {
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.title,
-			'Products',
+			'Products'
 		)
 	})
 })
@@ -34,7 +34,7 @@ describe('Unsuccesful Login scenarios', () => {
 				authenticationPage.clickLoginButton()
 				cy.locateElementAndCompareText(
 					AuthenticationPage.ELEMENTS.errorMessage,
-					errorDescription,
+					errorDescription
 				)
 			})
 		})
@@ -48,7 +48,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
-			"You can only access '/inventory.html' when you are logged in.",
+			"You can only access '/inventory.html' when you are logged in."
 		)
 	})
 
@@ -57,7 +57,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
-			"You can only access '/cart.html' when you are logged in.",
+			"You can only access '/cart.html' when you are logged in."
 		)
 	})
 
@@ -66,7 +66,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
-			"You can only access '/checkout-step-one.html' when you are logged in.",
+			"You can only access '/checkout-step-one.html' when you are logged in."
 		)
 	})
 
@@ -75,7 +75,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
-			"You can only access '/checkout-step-two.html' when you are logged in.",
+			"You can only access '/checkout-step-two.html' when you are logged in."
 		)
 	})
 
@@ -84,7 +84,7 @@ describe('Unsuccessful actions without login in scenarios', () => {
 
 		cy.locateElementAndCompareText(
 			AuthenticationPage.ELEMENTS.errorMessage,
-			"You can only access '/checkout-complete.html' when you are logged in.",
+			"You can only access '/checkout-complete.html' when you are logged in."
 		)
 	})
 })

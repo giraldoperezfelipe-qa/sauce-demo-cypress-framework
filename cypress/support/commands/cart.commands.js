@@ -10,7 +10,8 @@ Cypress.Commands.add('retrieveProductNamesInCart', (products) => {
 					productNamesList.push(text.trim())
 				})
 		})
-		.then(() => { //Once finished, return the names list
+		.then(() => { 
+			//Once finished, return the names list
 			return productNamesList
 		})
 })
