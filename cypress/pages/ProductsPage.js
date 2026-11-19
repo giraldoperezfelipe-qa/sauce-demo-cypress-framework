@@ -17,7 +17,7 @@ class ProductsPage {
 				)
 			} else if (numberOfProductsToAdd < 0) {
 				throw new Error(
-					'Items to add to the cart can only be possitive integers, please check'
+					'Items to add to the cart can only be positive integers, please check'
 				)
 			} else {
 				const selectedIndices = []
